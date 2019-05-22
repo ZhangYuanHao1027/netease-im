@@ -26,7 +26,7 @@ const (
 	MsgTypeVideo
 )
 
-//SendTextMessage 发送文本消息,消息内容最长5000
+//SendTextMessage 发送文本消息,消息内容最长5000 返回云信返回值
 func (c *ImClient) SendTextMessage(fromID, toID string, msg *TextMessage, opt *ImSendMessageOption) (string, error) {
 	bd, err := jsonTool.MarshalToString(msg)
 	if err != nil {
