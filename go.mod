@@ -1,4 +1,4 @@
-module github.com/ZhangYuanHao/netease-im
+module github.com/ZhangYuanHao1027/netease-im
 
 require (
 	github.com/go-resty/resty v1.7.0
