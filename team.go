@@ -3,6 +3,7 @@ package netease
 import (
 	"encoding/json"
 	"errors"
+	jsoniter "github.com/json-iterator/go"
 	"strconv"
 )
 
@@ -142,7 +143,7 @@ func (c *ImClient) UpdateTeam(tid, tname, owner, announcement, intro, icon strin
 	resp, err := client.Post(updateTeam)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -176,7 +177,7 @@ func (c *ImClient) QueryTeamDetail(tid string) (string, error) {
 	resp, err := client.Post(queryTeamDetail)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -208,8 +209,7 @@ func (c *ImClient) AddMember(tid, owner string, members []string, magree int, ms
 	param := map[string]string{"tid": tid}
 	param["owner"] = owner
 
-	n, err := json.Marshal(members)
-	m := string(n)
+	m, err := jsonTool.MarshalToString(members)
 	if err != nil {
 		return "", err
 	}
@@ -224,7 +224,7 @@ func (c *ImClient) AddMember(tid, owner string, members []string, magree int, ms
 	resp, err := client.Post(addMember)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -254,8 +254,7 @@ func (c *ImClient) KickMember(tid, owner string, members []string) (string, erro
 	param := map[string]string{"tid": tid}
 	param["owner"] = owner
 
-	n, err := json.Marshal(members)
-	m := string(n)
+	m, err := jsonTool.MarshalToString(members)
 	if err != nil {
 		return "", err
 	}
@@ -268,7 +267,7 @@ func (c *ImClient) KickMember(tid, owner string, members []string) (string, erro
 	resp, err := client.Post(kickMember)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -304,7 +303,7 @@ func (c *ImClient) LeaveTeam(tid, accid string) (string, error) {
 	resp, err := client.Post(leaveTeam)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -333,7 +332,6 @@ func (c *ImClient) LeaveTeam(tid, accid string) (string, error) {
  */
 func (c *ImClient) ChangeOwner(tid, owner, newowner string, leave int) (string, error) {
 	param := map[string]string{"tid": tid}
-	param["accid"] = accid
 
 	client := c.client.R()
 	c.setCommonHead(client)
@@ -372,8 +370,7 @@ func (c *ImClient) AddManager(tid, owner string, members []string) (string, erro
 	param := map[string]string{"tid": tid}
 	param["owner"] = owner
 
-	n, err := json.Marshal(members)
-	m := string(n)
+	m, err := jsonTool.MarshalToString(members)
 	if err != nil {
 		return "", err
 	}
@@ -386,7 +383,7 @@ func (c *ImClient) AddManager(tid, owner string, members []string) (string, erro
 	resp, err := client.Post(addManager)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -416,8 +413,7 @@ func (c *ImClient) RemoveManager(tid, owner string, members []string) (string, e
 	param := map[string]string{"tid": tid}
 	param["owner"] = owner
 
-	n, err := json.Marshal(members)
-	m := string(n)
+	m, err := jsonTool.MarshalToString(members)
 	if err != nil {
 		return "", err
 	}
@@ -430,7 +426,7 @@ func (c *ImClient) RemoveManager(tid, owner string, members []string) (string, e
 	resp, err := client.Post(removeManager)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -471,7 +467,7 @@ func (c *ImClient) MuteTlist(tid, owner, accid string, mute int) (string, error)
 	resp, err := client.Post(muteTlist)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
@@ -511,7 +507,7 @@ func (c *ImClient) muteTlistAll(tid, owner string, mute int) (string, error) {
 	resp, err := client.Post(muteTlistAll)
 
 	var jsonRes map[string]*json.RawMessage
-	err = json.Unmarshal(resp.Body(), &jsonRes)
+	err = jsoniter.Unmarshal(resp.Body(), &jsonRes)
 
 	if err != nil {
 		return string(resp.Body()), err
